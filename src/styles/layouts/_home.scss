@@ -1,16 +1,4 @@
-$breakpoints: (
-  small: 40em,
-  medium: 65em,
-  large: 90em
-);
-
-@mixin mq($key) {
-  $size: map-get($breakpoints, $key);
-
-  @media only screen and (min-width: $size) {
-    @content;
-  }
-}
+@use '../abstracts' as *;
 
 .card {
   padding: 1em;
