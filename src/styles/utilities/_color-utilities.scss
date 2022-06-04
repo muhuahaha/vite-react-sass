@@ -5,7 +5,7 @@
   @each $prop, $value in $shade {
     .text-#{$color}-#{$prop} {
       color: var(--clr-#{$color}-#{$prop}) !important;
-      font-size: 4rem;
+      font-size: 1rem;
     }
     @debug 'text-#{$color}-#{$prop}';
 

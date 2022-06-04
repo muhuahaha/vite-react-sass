@@ -1,6 +1,15 @@
 import styles from '../styles/layouts/Home.module.scss';
+import { useState, useEffect, useRef } from 'react';
+import ColorBox from '../components/layouts/ColorBox';
+import ColorBoxRandom from '../components/layouts/ColorBoxRandom';
+
+import Points from '../components/Points';
 
 function Home() {
+  const [name, setName] = useState('');
+
+  const renderCount = useRef(0);
+
   const colors = [
     'slate',
     'gray',
@@ -13,7 +22,7 @@ function Home() {
     'yellow',
     'lime',
     'green',
-    'emerald-test',
+    'emerald',
     'teal',
     'cyan',
     'sky',
@@ -27,26 +36,47 @@ function Home() {
   ];
   const shades = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
 
+  function focus() {
+    setColor1(generateHex());
+  }
+
+  let mystyle = {
+    color: 'red',
+    padding: '20px'
+  };
+
+  useEffect(() => {
+    // divElement.style.backgroundColor = 'red';
+  }, []);
+
+  useEffect(() => {
+    renderCount.current = renderCount.current + 1;
+  });
+
   return (
     <div className={styles.container}>
+      <input value={name} onChange={(e) => setName(e.target.value)}></input>
+      <div>My name is {name}</div>
+      <div>I renderd {renderCount.current} time</div>
+      <Points />
       <h2 className={styles.title}>Hallo from Home</h2>
-      <h3 className="small-300 big-800">Hallo test small</h3>
-      <h3 className="big-800">Hallo test big</h3>
+      <h3 style={mystyle}>Hallo test small</h3>
       <div className="card">
-        <h3 className="card-title">sass</h3>
+        <h3 className="card-title">asdas</h3>
       </div>
-      <div className={styles.card}>
-        <h3 className={styles.card_title}>modules</h3>
-      </div>
-      <div>
+      <h3 className={styles.card_title}>
+        <button onClick={focus}>Test</button>
+      </h3>
+      <div className="card">
         {colors.map((color) =>
-          shades.map((shade, i) => (
-            <div key={i} className={`bg-${color}-${shade}`}>
-              <p className={styles.title}>
-                bg-{color}-{shade}
-              </p>
-            </div>
+          shades.map((shade, index) => (
+            <ColorBoxRandom key={index.toString()} color={color} shade={shade} />
           ))
+        )}
+      </div>
+      <div className="card">
+        {colors.map((color) =>
+          shades.map((shade, i) => <ColorBox key={i.toString()} color={color} shade={shade} />)
         )}
       </div>
     </div>
