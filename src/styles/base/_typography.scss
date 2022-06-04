@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
 * {
   // this is a bad idea, but works for now
   font-variation-settings: 'wght' var(--font-weight, 375), 'wdth' var(--font-width, 80);
@@ -5,7 +7,7 @@
 
 body {
   font-size: var(--fs-400);
-  font-family: 'Alaska', sans-serif;
+  font-family: 'Lato', sans-serif;
   color: var(--clr-neutral-900);
   letter-spacing: -0.5px;
 }

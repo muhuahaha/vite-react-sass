@@ -1,20 +1,34 @@
 import React from 'react';
 
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 
 function Navigation() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const pathMatchRoute = (route) => {
+    if (route === location.pathname) {
+      return true;
+    }
+  };
+
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
+    <div className="navbar">
+      <nav className="navbarNav">
+        <ul className="navbarListItems">
+          <li className="navbarListItem" onClick={() => navigate('/')}>
+            <p>{pathMatchRoute('/') ? 'navbarListItemNameActive' : 'navbarListItemName'} Explore</p>
           </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
+          <li className="navbarListItem" onClick={() => navigate('/offers')}>
+            <p>
+              {pathMatchRoute('/offers') ? 'navbarListItemNameActive' : 'navbarListItemName'} Offers
+            </p>
           </li>
-          <li>
-            <Link to="/notifications">Notifications</Link>
+          <li className="navbarListItem" onClick={() => navigate('/profile')}>
+            <p>
+              {pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}
+              Profile
+            </p>
           </li>
         </ul>
       </nav>

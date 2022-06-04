@@ -29,15 +29,12 @@ $logo-color: aqua;
 
   @include mq(small) {
     padding: 3rem;
-    background-color: rgb(0, 0, 0);
   }
   @include mq(medium) {
     padding: 6rem;
-    background-color: rgb(177, 177, 177);
   }
   @include mq(large) {
     padding: 6rem;
-    background-color: rgb(60, 60, 60);
   }
 }
 

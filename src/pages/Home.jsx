@@ -2,11 +2,21 @@ import styles from '../styles/layouts/Home.module.scss';
 import { useState, useEffect, useRef } from 'react';
 import ColorBox from '../components/layouts/ColorBox';
 import ColorBoxRandom from '../components/layouts/ColorBoxRandom';
+import ColorBoxPlay from '../components/ColorBoxPlay';
+import chroma from 'chroma-js';
+import useWindowDimensions from '../components/hooks/windowDimensions';
 
 import Points from '../components/Points';
 
 function Home() {
   const [name, setName] = useState('');
+
+  const { height, width } = useWindowDimensions();
+  function generateHex() {
+    const hexColor = chroma.random();
+    return hexColor;
+  }
+  const colorsChroma = chroma.scale(['#fafa6e', '#2a4858']).mode('lch').colors(80);
 
   const renderCount = useRef(0);
 
@@ -56,7 +66,10 @@ function Home() {
   return (
     <div className={styles.container}>
       <input value={name} onChange={(e) => setName(e.target.value)}></input>
-      <div>My name is {name}</div>
+      <div>My name is {name}</div>{' '}
+      <div>
+        {width} - {height}
+      </div>
       <div>I renderd {renderCount.current} time</div>
       <Points />
       <h2 className={styles.title}>Hallo from Home</h2>
@@ -78,6 +91,11 @@ function Home() {
         {colors.map((color) =>
           shades.map((shade, i) => <ColorBox key={i.toString()} color={color} shade={shade} />)
         )}
+      </div>
+      <div className="card">
+        {colorsChroma.map((color, i) => (
+          <ColorBoxPlay key={i.toString()} color={color} />
+        ))}
       </div>
     </div>
   );
