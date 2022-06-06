@@ -4,7 +4,7 @@ import ColorBox from '../components/layouts/ColorBox';
 import ColorBoxRandom from '../components/layouts/ColorBoxRandom';
 import ColorBoxPlay from '../components/ColorBoxPlay';
 import chroma from 'chroma-js';
-import useWindowDimensions from '../components/hooks/windowDimensions';
+import useWindowDimensions from '../hooks/windowDimensions';
 
 import Points from '../components/Points';
 
