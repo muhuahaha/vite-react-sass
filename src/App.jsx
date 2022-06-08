@@ -11,6 +11,7 @@ import Spinner from './components/layouts/Spinner';
 import HomePage from './pages/Home';
 import Explore from './pages/Explore';
 import Navigation from './components/layouts/Navigation';
+// import Listing from './pages/Listing';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Notifications = lazy(() => import('./pages/Notifications'));
@@ -24,6 +25,8 @@ const SignIn = lazy(() => import('./pages/SignIn'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const CreateListing = lazy(() => import('./pages/CreateListing'));
+const Listing = lazy(() => import('./pages/Listing'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 export default function App() {
   return (
@@ -42,6 +45,8 @@ export default function App() {
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/create-listing" element={<CreateListingPage />} />
+          <Route path="/category/:categoryName/:listingId" element={<ListingPage />} />
+          <Route path="/contact/:landlordId" element={<ContactPage />} />
 
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
@@ -139,6 +144,28 @@ const ForgotPasswordPage = () => (
       </div>
     }>
     <ForgotPassword />
+  </Suspense>
+);
+
+const ListingPage = () => (
+  <Suspense
+    fallback={
+      <div>
+        <Spinner />
+      </div>
+    }>
+    <Listing />
+  </Suspense>
+);
+
+const ContactPage = () => (
+  <Suspense
+    fallback={
+      <div>
+        <Spinner />
+      </div>
+    }>
+    <Contact />
   </Suspense>
 );
 
