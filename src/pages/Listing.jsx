@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  Circle,
+  CircleMarker,
+  Rectangle
+} from 'react-leaflet';
 import { getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../firebase.config';
@@ -10,6 +19,8 @@ function Listing() {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(false);
+  const [cordinateLat, setCordinateLat] = useState(null);
+  const [cordinateLng, setCordinateLng] = useState(null);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -22,15 +33,31 @@ function Listing() {
       const docSnap = await getDoc(docRef);
 
       console.log(docRef, 'doc');
-      console.log(docSnap, 'docSnap');
+      console.log(docSnap.data(), 'docSnap');
       if (docSnap.exists()) {
         setListing(docSnap.data());
         setLoading(false);
+        setCordinateLat(docSnap.data().geolocation.lat);
+        setCordinateLng(docSnap.data().geolocation.lng);
       }
     };
 
     fetchListing();
   }, [navigate, params.listingId]);
+
+  const center = [cordinateLat, cordinateLng];
+
+  const rectangle = [
+    [cordinateLat, cordinateLng],
+    [cordinateLat + 0.01, cordinateLng + 0.01]
+  ];
+
+  const fillBlueOptions = { fillColor: 'blue' };
+  const blackOptions = { color: 'black' };
+  const whiteOptions = { color: 'white' };
+  const limeOptions = { color: 'lime' };
+  const purpleOptions = { color: 'yellow' };
+  const redOptions = { color: 'red' };
 
   if (loading) {
     return <Spinner />;
@@ -73,7 +100,33 @@ function Listing() {
           <li>{listing.furnished && 'Furnished'}</li>
         </ul>
 
-        <p className="listingLocationTitle">Location</p>
+        <p className="listingLocationTitle">{listing.geolocation.lat}</p>
+        <p className="listingLocationTitle">{listing.geolocation.lng}</p>
+        <div className="leafletContainer">
+          <MapContainer
+            style={{ height: '100%', width: '100%' }}
+            center={[listing.geolocation.lat, listing.geolocation.lng]}
+            zoom={13}
+            scrollWheelZoom={true}>
+            <TileLayer
+              attribution='&copy; <a href="https://maps.geoapify.com/v1/tile/dark-matter-purple-roads/{z}/{x}/{y}.png?apiKey=17f564e38c1a4d579b9ea0f4bf0f707c">OpenStreetMap</a> contributors'
+              url="https://maps.geoapify.com/v1/tile/dark-matter-purple-roads/{z}/{x}/{y}.png?apiKey=17f564e38c1a4d579b9ea0f4bf0f707c"
+            />
+            <Circle center={center} pathOptions={fillBlueOptions} radius={600} />
+            <CircleMarker
+              center={[listing.geolocation.lat, listing.geolocation.lng]}
+              pathOptions={redOptions}
+              radius={20}>
+              <Popup>Popup in CircleMarker</Popup>
+            </CircleMarker>
+
+            <Rectangle bounds={rectangle} pathOptions={whiteOptions} />
+
+            <Marker position={[listing.geolocation.lat, listing.geolocation.lng]}>
+              <Popup>{listing.location}</Popup>
+            </Marker>
+          </MapContainer>
+        </div>
 
         {auth.currentUser?.uid !== listing.userRef && (
           <Link
